@@ -135,7 +135,10 @@ public class GameManager extends ApplicationAdapter {
         Item got = map.touchingItem();
         if (got != null) {
             map.player.pickUp();
-            lastEvent = "picked up " + got.translation + "  1/2 then E";
+            // only say it if a slot actually took it  pocket starts full
+            if (got.taken) {
+                lastEvent = "picked up " + got.translation + "  1/2 then E";
+            }
         }
         Goose bump = map.overlappingGoose();
         if (bump != null && Gdx.input.isKeyJustPressed(Input.Keys.E)) {
@@ -176,8 +179,9 @@ public class GameManager extends ApplicationAdapter {
                     }
                 } else if (e.id.equals("leftover")) {
                     lastEvent = "leftover food on the side path";
-                    // 8 left of the trigger so it sits on the spur
+                    // two rolls  pocket is often full so one can wait
                     map.worldItems.add(new Item("greggs", "food", 3, 1, e.x - 8, e.y));
+                    map.worldItems.add(new Item("greggs", "food", 3, 1, e.x + 22, e.y));
                 }
             }
         }
