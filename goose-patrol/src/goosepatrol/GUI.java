@@ -103,7 +103,7 @@ public class GUI {
         font.draw(batch, "SETTINGS", 352, 267);
         font.draw(batch, "WASD  walk", 300, 200);
         font.draw(batch, "follow the brown path  yellow EXIT is the way out", 160, 172);
-        font.draw(batch, "geese sit in the way and will not let you past", 180, 144);
+        font.draw(batch, "geese chase you and take health if they touch you", 155, 144);
         font.draw(batch, "press 1 for food  walk into the goose  press E to feed it", 130, 116);
         font.draw(batch, "click START or press enter", 270, 78);
     }
