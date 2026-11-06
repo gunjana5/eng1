@@ -1,0 +1,38 @@
+plugins {
+    id 'application'
+}
+
+java {
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
+repositories {
+    mavenCentral()
+}
+
+def gdxVersion = "1.13.1"
+
+dependencies {
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
+
+application {
+    mainClass = "goosepatrol.DesktopLauncher"
+}
+
+// mac glfw fix is in DesktopLauncher (glfw_async)
+// do not put -XstartOnFirstThread here, windows people do not need it
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src"]
+        }
+        resources {
+            srcDirs = ["assets"]
+        }
+    }
+}

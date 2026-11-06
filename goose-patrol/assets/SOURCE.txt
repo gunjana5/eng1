@@ -1,0 +1,7 @@
+Cobra-Chicken goose by Duckhive
+https://duckhive.itch.io/goose
+CC0 (public domain, no credit needed)
+
+Idle.png Walk.png Run.png
+from Goose.zip  each frame is 64x64 so i can cut them
+Flap.png not used so it is not in assets
