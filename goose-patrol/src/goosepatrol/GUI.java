@@ -34,7 +34,7 @@ public class GUI {
         }
     }
     public void renderHotbarIcons(SpriteBatch batch, GameManager game) {
-        // pictures in the boxes  1 and 2 under them
+        // 1 and 2 pick the slot  number on the picture is uses left
         if (game.map == null) {
             return;
         }
@@ -44,6 +44,7 @@ public class GUI {
             Item it = game.map.player.inventory[i];
             if (it != null && it.texture != null) {
                 batch.draw(it.texture, hx + 2, 14, 28, 22);
+                font.draw(batch, String.valueOf(it.uses), hx + 20, 24);
             }
             font.draw(batch, String.valueOf(i + 1), hx + 12, 54);
             hx += 48;
