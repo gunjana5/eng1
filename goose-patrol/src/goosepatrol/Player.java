@@ -90,24 +90,24 @@ public class Player extends Entity implements PlayerController {
     }
     public void draw(SpriteBatch batch) {
         sprite.draw(batch, x, y, w, h);
-        // 1/2 is what is in the hand  E eats it and this goes
+        // 1/2 puts the selected item in the hand  last use clears the slot so this goes
         Item held = inventory[selected];
         if (held == null || held.texture == null) {
             return;
         }
-        float hw = 12;
-        float hh = 8;
+        float hw = 20;
+        float hh = 14;
         if (held.id.equals("speed")) {
             // bottle is taller
-            hw = 7;
-            hh = 11;
+            hw = 11;
+            hh = 18;
         }
-        float hy = y + 10;
+        float hy = y + 8;
         float hx;
         if (sprite.faceLeft) {
-            hx = x - hw + 2;
+            hx = x - hw - 1;
         } else {
-            hx = x + w - 2;
+            hx = x + w + 1;
         }
         batch.draw(held.texture, hx, hy, hw, hh);
     }

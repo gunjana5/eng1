@@ -68,8 +68,9 @@ public class Renderer {
         batch.setProjectionMatrix(worldCam.combined);
         batch.begin();
         game.map.drawItems(batch);
-        game.map.drawPlayer(batch);
         game.map.drawGeese(batch);
+        // me last so the hand item sits in front of a goose when you feed
+        game.map.drawPlayer(batch);
         game.gui.renderWorld(batch, game);
         batch.end();
         shapes.setProjectionMatrix(uiCam.combined);
