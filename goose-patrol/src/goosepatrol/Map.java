@@ -175,6 +175,7 @@ public class Map {
         player.y = oldY;
         player.position.x = oldX;
         player.position.y = oldY;
+        player.syncBox();
     }
     public Item touchingItem() {
         // walk onto food or drink
