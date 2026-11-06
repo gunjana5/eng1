@@ -19,8 +19,8 @@ public class Player extends Entity implements PlayerController {
     boolean justUsed;
     String lastUsedId;
     public Player(float x, float y) {
-        // little person hitbox  sprite is the same size
-        super(x, y, 16, 28);
+        // bigger than 16x28 so you can see me next to the geese
+        super(x, y, 28, 48);
         position = new Position(x, y);
         velocity = new Velocity(0, 0);
         sprite = Sprite.playerSprite();
@@ -86,7 +86,7 @@ public class Player extends Entity implements PlayerController {
     public void draw(ShapeRenderer shapes) {
         // blob under the feet so you read as on the path
         shapes.setColor(0.16f, 0.16f, 0.14f, 1);
-        shapes.ellipse(x - 2, y - 3, w + 4, 8);
+        shapes.ellipse(x - 2, y - 4, w + 4, 10);
     }
     public void draw(SpriteBatch batch) {
         sprite.draw(batch, x, y, w, h);
@@ -95,14 +95,14 @@ public class Player extends Entity implements PlayerController {
         if (held == null || held.texture == null) {
             return;
         }
-        float hw = 20;
-        float hh = 14;
+        float hw = 24;
+        float hh = 16;
         if (held.id.equals("speed")) {
             // bottle is taller
-            hw = 11;
-            hh = 18;
+            hw = 12;
+            hh = 20;
         }
-        float hy = y + 8;
+        float hy = y + 14;
         float hx;
         if (sprite.faceLeft) {
             hx = x - hw - 1;
