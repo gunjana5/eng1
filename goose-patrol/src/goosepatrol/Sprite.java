@@ -10,11 +10,13 @@ public class Sprite {
     static Texture walkSheet;
     static Texture runSheet;
     static Texture playerSheet;
+    static Texture playerWalkSheet;
     static Texture playerBoostSheet;
     static Object[] idleFrames;
     static Object[] walkFrames;
     static Object[] runFrames;
     static Object[] playerFrames;
+    static Object[] playerWalkFrames;
     static Object[] playerBoostFrames;
     static boolean loaded;
     Object[] images;
@@ -22,8 +24,8 @@ public class Sprite {
     float clock;
     int frame;
     boolean faceLeft;
+
     public static boolean tryLoad() {
-        // load  once  cut the sheets into frames
         if (loaded) {
             return true;
         }
@@ -31,58 +33,48 @@ public class Sprite {
             idleSheet = sheet("goose/Idle.png");
             walkSheet = sheet("goose/Walk.png");
             runSheet = sheet("goose/Run.png");
-            // idle is 2 frames  walk and run are 4
-            idleFrames = cut(idleSheet, 2);
-            walkFrames = cut(walkSheet, 4);
-            runFrames = cut(runSheet, 4);
-            playerSheet = makePerson(false);
-            playerBoostSheet = makePerson(true);
-            playerFrames = new Object[] { new TextureRegion(playerSheet) };
-            playerBoostFrames = new Object[] { new TextureRegion(playerBoostSheet) };
+            idleFrames = cut(idleSheet, 2, 64, 64);
+            walkFrames = cut(walkSheet, 4, 64, 64);
+            runFrames = cut(runSheet, 4, 64, 64);
+
+            //refactored for player spritesheet
+            playerSheet = sheet("player/idle.png");
+            playerWalkSheet = sheet("player/walk.png");
+            playerBoostSheet = sheet("player/run.png");
+            playerFrames = cutEven(playerSheet, 2);
+            playerWalkFrames = cutEven(playerWalkSheet, 4);
+            playerBoostFrames = cutEven(playerBoostSheet, 4);
+
             loaded = true;
             return true;
         } catch (Exception e) {
+            e.printStackTrace(); //log error
             unload();
             return false;
         }
     }
+
     static Texture sheet(String name) {
         // nearest so the pixels stay chunky
         Texture t = new Texture(Gdx.files.internal(name));
         t.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         return t;
     }
-    static Object[] cut(Texture sheet, int n) {
-        // duckhive frames are 64x64
-        TextureRegion[][] grid = TextureRegion.split(sheet, 64, 64);
+
+    static Object[] cut(Texture sheet, int n, int w, int h) {
+        TextureRegion[][] grid = TextureRegion.split(sheet, w, h);
         Object[] out = new Object[n];
         for (int i = 0; i < n; i++) {
             out[i] = grid[0][i];
         }
         return out;
     }
-    static Texture makePerson(boolean boost) {
-        // same little person i used to draw with rectangles
-        Pixmap p = new Pixmap(16, 28, Pixmap.Format.RGBA8888);
-        p.setColor(0, 0, 0, 0);
-        p.fill();
-        p.setColor(0.15f, 0.15f, 0.4f, 1);
-        p.fillRectangle(2, 18, 4, 10);
-        p.fillRectangle(10, 18, 4, 10);
-        if (boost) {
-            // cyan when the drink is on
-            p.setColor(0.2f, 0.75f, 0.9f, 1);
-        } else {
-            p.setColor(0.2f, 0.4f, 0.9f, 1);
-        }
-        p.fillRectangle(2, 8, 12, 12);
-        p.setColor(0.95f, 0.8f, 0.65f, 1);
-        p.fillCircle(8, 6, 5);
-        Texture t = new Texture(p);
-        t.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-        p.dispose();
-        return t;
+
+    // n frames side by side, one row, evenly spaced
+    static Object[] cutEven(Texture sheet, int n) {
+        return cut(sheet, n, sheet.getWidth() / n, sheet.getHeight());
     }
+
     public static void unload() {
         // game closing
         if (idleSheet != null) {
@@ -100,6 +92,10 @@ public class Sprite {
         if (playerBoostSheet != null) {
             playerBoostSheet.dispose();
         }
+        if (playerWalkSheet != null) {
+            playerWalkSheet.dispose();
+        }
+        playerWalkSheet = null;
         idleSheet = null;
         walkSheet = null;
         runSheet = null;
@@ -119,7 +115,7 @@ public class Sprite {
         // one frame  not a sheet
         Sprite s = new Sprite();
         s.images = playerFrames;
-        s.times = new float[] {1f};
+        s.times = new float[] {0.4f, 0.4f};
         s.faceLeft = false;
         return s;
     }
@@ -135,12 +131,14 @@ public class Sprite {
         // 0.08s a frame
         setAnim(runFrames, new float[] {0.08f, 0.08f, 0.08f, 0.08f});
     }
-    public void usePlayer(boolean boost) {
-        // drink on  cyan person
+
+    public void usePlayer(boolean boost, boolean moving) {
         if (boost) {
-            setAnim(playerBoostFrames, new float[] {1f});
+            setAnim(playerBoostFrames, new float[] {0.1f, 0.1f, 0.1f, 0.1f});  // 4 run frames
+        } else if (moving) {
+            setAnim(playerWalkFrames, new float[] {0.12f, 0.12f, 0.12f, 0.12f});
         } else {
-            setAnim(playerFrames, new float[] {1f});
+            setAnim(playerFrames, new float[] {0.4f, 0.4f});
         }
     }
     void setAnim(Object[] next, float[] nextTimes) {

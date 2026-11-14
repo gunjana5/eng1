@@ -66,7 +66,12 @@ public class Player extends Entity implements PlayerController {
         } else if (velocity.x > 1) {
             sprite.faceLeft = false;
         }
-        sprite.usePlayer(speedBoostLeft > 0);
+
+        //check if player is moving
+        boolean moving = Math.abs(velocity.x) > 1 || Math.abs(velocity.y) > 1;
+        sprite.usePlayer(speedBoostLeft > 0, moving);
+        sprite.tick(dt); //update tick so animation works - same as goose
+
         // stamina goes down while you run
         if (movedThisFrame) {
             // 18 a second
