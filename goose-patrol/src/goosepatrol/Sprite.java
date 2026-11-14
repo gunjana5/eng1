@@ -28,9 +28,9 @@ public class Sprite {
             return true;
         }
         try {
-            idleSheet = sheet("Idle.png");
-            walkSheet = sheet("Walk.png");
-            runSheet = sheet("Run.png");
+            idleSheet = sheet("goose/Idle.png");
+            walkSheet = sheet("goose/Walk.png");
+            runSheet = sheet("goose/Run.png");
             // idle is 2 frames  walk and run are 4
             idleFrames = cut(idleSheet, 2);
             walkFrames = cut(walkSheet, 4);
