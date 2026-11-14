@@ -133,7 +133,7 @@ public class Sprite {
     }
 
     public void usePlayer(boolean boost, boolean moving) {
-        if (boost) {
+        if (boost && moving) {
             setAnim(playerBoostFrames, new float[] {0.1f, 0.1f, 0.1f, 0.1f});  // 4 run frames
         } else if (moving) {
             setAnim(playerWalkFrames, new float[] {0.12f, 0.12f, 0.12f, 0.12f});
