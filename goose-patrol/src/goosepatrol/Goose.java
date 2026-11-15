@@ -27,7 +27,7 @@ public class Goose extends Entity {
         this.tracker = tracker;
     }
     public void followPlayer(float px, float py) {
-        // chase me using the tracker  skip if they ate or i went afk
+        // chase me using the tracker  skip if they ate or got distracted or i went afk
         if (fed) {
             return;
         }
@@ -61,9 +61,9 @@ public class Goose extends Entity {
         velocity.x = dx / dist * step;
         velocity.y = dy / dist * step;
     }
-    public void eat() {
-        // long boi statue  no food item
-        eat(null);
+    public void distract(float seconds) {
+        // long boi  look at the statue then chase again
+        freezeLeft = seconds;
     }
     public void eat(Item food) {
         // this goose only  walk onto the grass not teleport

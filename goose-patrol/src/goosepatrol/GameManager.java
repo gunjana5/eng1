@@ -174,10 +174,10 @@ public class GameManager extends ApplicationAdapter {
                 e.triggered = true;
                 eventsHit++;
                 if (e.id.equals("longboi")) {
-                    lastEvent = "long boi statue  the geese wandered off";
+                    lastEvent = "long boi statue  the geese got distracted";
                     for (int g = 0; g < map.enemies.size(); g++) {
                         if (!map.enemies.get(g).fed) {
-                            map.enemies.get(g).eat();
+                            map.enemies.get(g).distract(5);
                         }
                     }
                 } else if (e.id.equals("leftover")) {
