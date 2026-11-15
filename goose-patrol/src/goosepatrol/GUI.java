@@ -1,5 +1,6 @@
 package goosepatrol;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -10,9 +11,18 @@ public class GUI {
         // default font  no .fnt file
         font = new BitmapFont();
         font.setColor(Color.WHITE);
+        font.getRegion().getTexture().setFilter(
+                Texture.TextureFilter.Linear,
+                Texture.TextureFilter.Linear
+        );
         font.getData().setScale(1.15f);
+
         big = new BitmapFont();
         big.setColor(Color.WHITE);
+        font.getRegion().getTexture().setFilter(
+                Texture.TextureFilter.Linear,
+                Texture.TextureFilter.Linear
+        );
         // 1.15 body  1.6 titles
         big.getData().setScale(1.6f);
     }
