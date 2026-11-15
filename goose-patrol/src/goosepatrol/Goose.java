@@ -32,7 +32,8 @@ public class Goose extends Entity {
             return;
         }
         if (tracker != null) {
-            if (tracker.timedOut() || tracker.afk) {
+            // afk stops all of them  eating is per goose so i do not set the shared timeout
+            if (tracker.afk) {
                 return;
             }
             tracker.followPlayer();
@@ -61,18 +62,15 @@ public class Goose extends Entity {
         velocity.y = dy / dist * step;
     }
     public void eat() {
-        // long boi path  no food item
+        // long boi statue  no food item
         eat(null);
     }
     public void eat(Item food) {
-        // walk onto the grass not teleport  999 so they stay off you
+        // this goose only  walk onto the grass not teleport
         item = food;
         fed = true;
         hungerTimer = 0;
         freezeLeft = 999;
-        if (tracker != null) {
-            tracker.setTimeOut(999);
-        }
         sitX = x - 55;
         sitY = y - 70;
     }
