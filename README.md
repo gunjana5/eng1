@@ -2,7 +2,10 @@
 
 ## Running the game
 
+Enter the game directory:
+```
 cd goose-patrol
+```
 
 mac:
 ```
