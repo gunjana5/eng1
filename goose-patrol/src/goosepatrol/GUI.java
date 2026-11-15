@@ -60,7 +60,7 @@ public class GUI {
         font.draw(batch, "items used " + game.itemsUsed + "   events " + game.eventsHit, 160, 468);
         font.draw(batch, "health " + game.map.player.health + "   stamina " + (int) game.map.player.stamina, 420, 468);
         font.draw(batch, "path bends  yellow is the way out", 10, 448);
-        font.draw(batch, "1/2 select   E consume", 50, 32);
+        font.draw(batch, "1/2 select   E consume", 120, 32);
         if (game.lastEvent != null) {
             font.draw(batch, game.lastEvent, 280, 32);
         }
