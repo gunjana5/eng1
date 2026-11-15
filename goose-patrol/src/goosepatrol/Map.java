@@ -9,12 +9,11 @@ public class Map {
     ArrayList<Item> worldItems;
     ArrayList<float[]> bushes;
     ArrayList<float[]> paths;
-    ArrayList<float[]> ponds;
     ArrayList<float[]> posts;
     PlayerTracker tracker;
     float[] exit;
     public Map() {
-        // spawn on the first east stretch  pond is under you
+        // spawn on the first east stretch
         player = new Player(70, 318);
         player.world = this;
         Item startFood = new Item("greggs", "food", 3, 2, 0, 0);
@@ -44,12 +43,10 @@ public class Map {
         bushes.add(new float[] {520, 364, 110, 140});
         // block in the fork so left and right are not the same walk
         bushes.add(new float[] {280, 580, 380, 140});
-        // under the east bit  leave the pond alone
+        // under the east bit
         bushes.add(new float[] {300, 140, 500, 150});
         bushes.add(new float[] {800, 948, 720, 80});
         bushes.add(new float[] {0, 500, 32, 320});
-        ponds = new ArrayList<float[]>();
-        ponds.add(new float[] {70, 150, 180, 120});
         posts = new ArrayList<float[]>();
         // yellow
         posts.add(new float[] {1296, 864});
@@ -61,8 +58,8 @@ public class Map {
         enemies.add(new Goose(188, 600, tracker));
         enemies.add(new Goose(900, 872, tracker));
         events = new ArrayList<ProximityEvent>();
-        // long boi statue in the grass  east of the pond so you can walk to it
-        events.add(new ProximityEvent("longboi", 275, 245, 48));
+        // long boi on a plinth  south of the first path
+        events.add(new ProximityEvent("longboi", 160, 210, 48));
         // leftover on the side spur
         events.add(new ProximityEvent("leftover", 90, 750, 70));
         worldItems = new ArrayList<Item>();
@@ -110,7 +107,7 @@ public class Map {
                 continue;
             }
             // hungry ones stay near the walk  same as me
-            if (hitsBush(g.x, g.y, g.w, g.h) || hitsPond(g.x, g.y, g.w, g.h) || !onDirt(g.x, g.y, g.w, g.h)) {
+            if (hitsBush(g.x, g.y, g.w, g.h) || !onDirt(g.x, g.y, g.w, g.h)) {
                 g.x = oldX;
                 g.y = oldY;
                 g.position.x = oldX;
@@ -129,26 +126,13 @@ public class Map {
         }
         return false;
     }
-    public boolean hitsPond(float px, float py, float pw, float ph) {
-        // dont walk on the water
-        for (int i = 0; i < ponds.size(); i++) {
-            float[] p = ponds.get(i);
-            if (px < p[0] + p[2] && px + pw > p[0] && py < p[1] + p[3] && py + ph > p[1]) {
-                return true;
-            }
-        }
-        return false;
-    }
     public boolean checkCollisions() {
-        // far grass is blocked  bush pond or a hungry goose
+        // far grass is blocked  bush or a hungry goose
         float[] box = player.collisionBox.collisionBox;
         if (!onDirt(box[0], box[1], box[2], box[3])) {
             return true;
         }
         if (hitsBush(box[0], box[1], box[2], box[3])) {
-            return true;
-        }
-        if (hitsPond(box[0], box[1], box[2], box[3])) {
             return true;
         }
         for (int i = 0; i < enemies.size(); i++) {
@@ -212,6 +196,17 @@ public class Map {
         shapes.setColor(0.4f, 0.26f, 0.12f, 1);
         shapes.rect(px, py, 8, 64);
     }
+    public void drawLongBoi(ShapeRenderer shapes, float x, float y) {
+        // york stone plinth  bronze duck  tall neck like campus
+        shapes.setColor(0.7f, 0.66f, 0.56f, 1);
+        shapes.rect(x - 18, y, 36, 12);
+        shapes.rect(x - 12, y + 12, 24, 10);
+        shapes.setColor(0.55f, 0.36f, 0.16f, 1);
+        shapes.ellipse(x - 8, y + 22, 16, 20);
+        shapes.rect(x - 3, y + 40, 6, 28);
+        shapes.circle(x + 1, y + 72, 8);
+        shapes.triangle(x + 6, y + 76, x + 6, y + 68, x + 16, y + 72);
+    }
     public void draw(ShapeRenderer shapes, float camX, float camY, float viewW, float viewH) {
         // grass under the camera so the window is never grey
         shapes.setColor(0.45f, 0.7f, 0.38f, 1);
@@ -223,13 +218,6 @@ public class Map {
         }
         shapes.setColor(0.95f, 0.85f, 0.3f, 1);
         shapes.rect(exit[0], exit[1], exit[2], exit[3]);
-        for (int i = 0; i < ponds.size(); i++) {
-            float[] p = ponds.get(i);
-            shapes.setColor(0.28f, 0.52f, 0.78f, 1);
-            shapes.ellipse(p[0], p[1], p[2], p[3]);
-            shapes.setColor(0.4f, 0.65f, 0.85f, 1);
-            shapes.ellipse(p[0] + 24, p[1] + 16, p[2] * 0.35f, p[3] * 0.3f);
-        }
         for (int i = 0; i < bushes.size(); i++) {
             drawHedge(shapes, bushes.get(i));
         }
@@ -239,17 +227,9 @@ public class Map {
         }
         for (int i = 0; i < events.size(); i++) {
             ProximityEvent e = events.get(i);
-            if (!e.triggered || !e.id.equals("longboi")) {
-                continue;
+            if (e.id.equals("longboi")) {
+                drawLongBoi(shapes, e.x, e.y);
             }
-            // stone statue  not a live goose in the water
-            shapes.setColor(0.42f, 0.42f, 0.4f, 1);
-            shapes.rect(e.x - 14, e.y, 28, 10);
-            shapes.setColor(0.58f, 0.58f, 0.55f, 1);
-            shapes.rect(e.x - 5, e.y + 10, 10, 44);
-            shapes.circle(e.x, e.y + 62, 10);
-            shapes.setColor(0.35f, 0.35f, 0.33f, 1);
-            shapes.rect(e.x - 12, e.y + 58, 8, 4);
         }
     }
     public void drawItems(SpriteBatch batch) {
