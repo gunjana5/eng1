@@ -16,10 +16,9 @@ gradlew.bat run
 
 ## Controls
 
-click START
-WASD to walk
-SPACE to pause
-1/2 pick a slot
-E consume
-R reset
-arrows also walk
+click START to play\
+WASD or arrows to walk\
+SPACE to pause\
+1 and 2 to select an inventory item\
+E consume\
+R reset\
