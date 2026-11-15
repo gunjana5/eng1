@@ -145,7 +145,7 @@ public class Player extends Entity implements PlayerController {
         velocity.y = 0;
     }
     public void pickUp() {
-        // walk onto it  fills a free slot
+        // walk onto it  same id stacks  else a free slot
         if (world == null) {
             return;
         }
@@ -155,6 +155,15 @@ public class Player extends Entity implements PlayerController {
         // pocket until 1/2 then E
         if (item == null || item.taken) {
             return;
+        }
+        for (int i = 0; i < inventory.length; i++) {
+            Item have = inventory[i];
+            if (have != null && have.id.equals(item.id)) {
+                // two bottles or two rolls  keep one slot
+                have.uses += item.uses;
+                item.taken = true;
+                return;
+            }
         }
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == null) {
