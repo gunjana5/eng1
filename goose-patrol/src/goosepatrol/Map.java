@@ -61,8 +61,8 @@ public class Map {
         enemies.add(new Goose(188, 600, tracker));
         enemies.add(new Goose(900, 872, tracker));
         events = new ArrayList<ProximityEvent>();
-        // long boi in the grass south of the first stretch
-        events.add(new ProximityEvent("longboi", 220, 185, 48));
+        // long boi statue in the grass  east of the pond so you can walk to it
+        events.add(new ProximityEvent("longboi", 275, 245, 48));
         // leftover on the side spur
         events.add(new ProximityEvent("leftover", 90, 750, 70));
         worldItems = new ArrayList<Item>();
@@ -242,15 +242,14 @@ public class Map {
             if (!e.triggered || !e.id.equals("longboi")) {
                 continue;
             }
-            // long boi is the tall one so it is not the same as the path geese
-            shapes.setColor(0.93f, 0.93f, 0.95f, 1);
-            shapes.ellipse(e.x - 12, e.y, 24, 22);
-            shapes.rect(e.x - 4, e.y + 16, 8, 46);
-            shapes.circle(e.x, e.y + 68, 10);
-            shapes.setColor(1f, 0.55f, 0.12f, 1);
-            shapes.triangle(e.x - 6, e.y + 72, e.x - 6, e.y + 64, e.x - 20, e.y + 68);
-            shapes.setColor(0, 0, 0, 1);
-            shapes.circle(e.x - 3, e.y + 70, 2);
+            // stone statue  not a live goose in the water
+            shapes.setColor(0.42f, 0.42f, 0.4f, 1);
+            shapes.rect(e.x - 14, e.y, 28, 10);
+            shapes.setColor(0.58f, 0.58f, 0.55f, 1);
+            shapes.rect(e.x - 5, e.y + 10, 10, 44);
+            shapes.circle(e.x, e.y + 62, 10);
+            shapes.setColor(0.35f, 0.35f, 0.33f, 1);
+            shapes.rect(e.x - 12, e.y + 58, 8, 4);
         }
     }
     public void drawItems(SpriteBatch batch) {
