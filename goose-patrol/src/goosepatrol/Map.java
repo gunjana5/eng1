@@ -53,7 +53,8 @@ public class Map {
         posts.add(new float[] {1488, 864});
         enemies = new ArrayList<Goose>();
         // pinch  fork  leftover  last bit
-        enemies.add(new Goose(520, 308, tracker));
+        // 470 302 is in the gap  520 308 clipped the hedge so it froze
+        enemies.add(new Goose(470, 302, tracker));
         enemies.add(new Goose(708, 540, tracker));
         enemies.add(new Goose(188, 600, tracker));
         enemies.add(new Goose(900, 872, tracker));
@@ -106,12 +107,27 @@ public class Map {
             if (g.fed) {
                 continue;
             }
-            // hungry ones stay near the walk  same as me
+            // hungry ones stay near the walk  slide on hedges so they do not freeze
             if (hitsBush(g.x, g.y, g.w, g.h) || !onDirt(g.x, g.y, g.w, g.h)) {
-                g.x = oldX;
+                float nx = g.x;
+                float ny = g.y;
+                g.x = nx;
                 g.y = oldY;
-                g.position.x = oldX;
-                g.position.y = oldY;
+                g.position.x = g.x;
+                g.position.y = g.y;
+                g.syncBox();
+                if (hitsBush(g.x, g.y, g.w, g.h) || !onDirt(g.x, g.y, g.w, g.h)) {
+                    g.x = oldX;
+                }
+                g.y = ny;
+                g.position.x = g.x;
+                g.position.y = g.y;
+                g.syncBox();
+                if (hitsBush(g.x, g.y, g.w, g.h) || !onDirt(g.x, g.y, g.w, g.h)) {
+                    g.y = oldY;
+                }
+                g.position.x = g.x;
+                g.position.y = g.y;
                 g.syncBox();
             }
         }

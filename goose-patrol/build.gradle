@@ -23,6 +23,18 @@ application {
     mainClass = "goosepatrol.DesktopLauncher"
 }
 
+// one file jar  deps inside  so they can java -jar
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes "Main-Class": "goosepatrol.DesktopLauncher"
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA"
+}
+
 // mac glfw fix is in DesktopLauncher (glfw_async)
 // do not put -XstartOnFirstThread here, windows people do not need it
 
