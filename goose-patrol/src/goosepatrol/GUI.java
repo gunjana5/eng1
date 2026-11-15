@@ -19,7 +19,7 @@ public class GUI {
 
         big = new BitmapFont();
         big.setColor(Color.WHITE);
-        font.getRegion().getTexture().setFilter(
+        big.getRegion().getTexture().setFilter(
                 Texture.TextureFilter.Linear,
                 Texture.TextureFilter.Linear
         );
