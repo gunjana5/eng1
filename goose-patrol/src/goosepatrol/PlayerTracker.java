@@ -3,24 +3,18 @@ package goosepatrol;
 public class PlayerTracker {
     Player player;
     PlayerListener listener;
-    float timeOut;
     float idleTime;
     boolean afk;
     float followX;
     float followY;
     public PlayerTracker(Player player) {
-        // one tracker for both geese
+        // one tracker for the geese
         this.player = player;
         listener = null;
-        timeOut = 0;
         idleTime = 0;
         afk = false;
         followX = player.x + player.w / 2;
         followY = player.y + player.h / 2;
-    }
-    public float[] getPlayerPosition() {
-        // last lock on from followPlayer
-        return new float[] {followX, followY};
     }
     public float getdX() {
         // chase x  centre of me
@@ -38,14 +32,7 @@ public class PlayerTracker {
         followX = player.x + player.w / 2;
         followY = player.y + player.h / 2;
     }
-    public void setTimeOut(float seconds) {
-        // fed geese sit this long
-        timeOut = seconds;
-    }
     public void update(float dt) {
-        if (timeOut > 0) {
-            timeOut -= dt;
-        }
         // stand still too long and they stop chasing
         boolean moving = false;
         if (listener != null && listener.hadMove) {
@@ -64,9 +51,5 @@ public class PlayerTracker {
                 afk = true;
             }
         }
-    }
-    public boolean timedOut() {
-        // true while they are still eating
-        return timeOut > 0;
     }
 }

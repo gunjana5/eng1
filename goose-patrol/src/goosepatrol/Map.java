@@ -196,16 +196,22 @@ public class Map {
         shapes.setColor(0.4f, 0.26f, 0.12f, 1);
         shapes.rect(px, py, 8, 64);
     }
-    public void drawLongBoi(ShapeRenderer shapes, float x, float y) {
-        // york stone plinth  bronze duck  tall neck like campus
+    public void drawPodium(ShapeRenderer shapes, float x, float y) {
+        // empty plinth until you walk close
         shapes.setColor(0.7f, 0.66f, 0.56f, 1);
         shapes.rect(x - 18, y, 36, 12);
         shapes.rect(x - 12, y + 12, 24, 10);
-        shapes.setColor(0.55f, 0.36f, 0.16f, 1);
-        shapes.ellipse(x - 8, y + 22, 16, 20);
-        shapes.rect(x - 3, y + 40, 6, 28);
-        shapes.circle(x + 1, y + 72, 8);
-        shapes.triangle(x + 6, y + 76, x + 6, y + 68, x + 16, y + 72);
+    }
+    public void drawLongBoi(ShapeRenderer shapes, float x, float y) {
+        // tall white one  sits on the plinth
+        shapes.setColor(0.93f, 0.93f, 0.95f, 1);
+        shapes.ellipse(x - 12, y, 24, 22);
+        shapes.rect(x - 4, y + 16, 8, 46);
+        shapes.circle(x, y + 68, 10);
+        shapes.setColor(1f, 0.55f, 0.12f, 1);
+        shapes.triangle(x - 6, y + 72, x - 6, y + 64, x - 20, y + 68);
+        shapes.setColor(0, 0, 0, 1);
+        shapes.circle(x - 3, y + 70, 2);
     }
     public void draw(ShapeRenderer shapes, float camX, float camY, float viewW, float viewH) {
         // grass under the camera so the window is never grey
@@ -228,7 +234,11 @@ public class Map {
         for (int i = 0; i < events.size(); i++) {
             ProximityEvent e = events.get(i);
             if (e.id.equals("longboi")) {
-                drawLongBoi(shapes, e.x, e.y);
+                drawPodium(shapes, e.x, e.y);
+                if (e.triggered) {
+                    // pops up once you walk in range
+                    drawLongBoi(shapes, e.x, e.y + 22);
+                }
             }
         }
     }
