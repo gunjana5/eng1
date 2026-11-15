@@ -21,4 +21,4 @@ WASD or arrows to walk\
 SPACE to pause\
 1 and 2 to select an inventory item\
 E consume\
-R reset\
+R reset
