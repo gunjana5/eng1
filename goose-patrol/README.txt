@@ -12,6 +12,6 @@ camera follows you  window 800x480
 greggs 2 uses and a drink in the pocket
 geese follow  yellow is the way out
 long boi south of the first stretch
-leftover food on the west spur
+leftover food on the side spur
 geese pictures  duckhive cobra-chicken  cc0  https://duckhive.itch.io/goose
 dont add -XstartOnFirstThread on windows

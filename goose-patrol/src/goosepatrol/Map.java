@@ -10,7 +10,6 @@ public class Map {
     ArrayList<float[]> bushes;
     ArrayList<float[]> paths;
     ArrayList<float[]> ponds;
-    ArrayList<float[]> flowers;
     ArrayList<float[]> posts;
     PlayerTracker tracker;
     float[] exit;
@@ -26,92 +25,70 @@ public class Map {
         player.inventory[1] = startDrink;
         tracker = new PlayerTracker(player);
         paths = new ArrayList<float[]>();
-        // east through pinch 1  keep going until you are past the posts then north
-        paths.add(new float[] {40, 300, 560, 64});
-        // north after pinch 1  x 536 is past the hedge at x 508 so the turn is open
-        paths.add(new float[] {536, 300, 64, 260});
-        // fork  left is long  right has goose 2
-        paths.add(new float[] {160, 496, 440, 64});
-        paths.add(new float[] {160, 496, 64, 320});
-        // leftover food on this side bit
-        paths.add(new float[] {40, 700, 180, 56});
-        paths.add(new float[] {536, 496, 400, 64});
-        // north after pinch 2  x 856 is past those hedges
-        paths.add(new float[] {856, 496, 64, 320});
-        // join then last bend to yellow
-        paths.add(new float[] {160, 752, 760, 64});
-        paths.add(new float[] {856, 752, 64, 200});
-        paths.add(new float[] {856, 888, 500, 64});
-        exit = new float[] {1356, 888, 200, 64};
+        // east through the pinch then north
+        paths.add(new float[] {40, 300, 720, 64});
+        paths.add(new float[] {696, 300, 64, 280});
+        // fork  left is the quiet bit  right keeps going
+        paths.add(new float[] {180, 516, 580, 64});
+        paths.add(new float[] {180, 516, 64, 280});
+        paths.add(new float[] {40, 732, 204, 56});
+        paths.add(new float[] {696, 516, 64, 280});
+        // join then last stretch to yellow
+        paths.add(new float[] {180, 732, 700, 64});
+        paths.add(new float[] {816, 732, 64, 200});
+        paths.add(new float[] {816, 868, 480, 64});
+        exit = new float[] {1296, 868, 200, 64};
         bushes = new ArrayList<float[]>();
-        // pinch 1  top hedge stops before the fork at y 496
-        bushes.add(new float[] {400, 80, 108, 220});
-        bushes.add(new float[] {400, 364, 108, 116});
-        // pinch 2  top hedge stops before the join at y 752
-        bushes.add(new float[] {720, 240, 108, 256});
-        bushes.add(new float[] {720, 560, 108, 176});
-        // island in the fork so left and right are actually different
-        bushes.add(new float[] {280, 580, 450, 150});
-        // ponds first  scatter uses nearWater so this list cannot be empty yet
+        // pinch  path is the gap
+        bushes.add(new float[] {520, 80, 110, 220});
+        bushes.add(new float[] {520, 364, 110, 140});
+        // block in the fork so left and right are not the same walk
+        bushes.add(new float[] {280, 580, 380, 140});
+        // under the east bit  leave the pond alone
+        bushes.add(new float[] {300, 140, 500, 150});
+        bushes.add(new float[] {800, 948, 720, 80});
+        bushes.add(new float[] {0, 500, 32, 320});
         ponds = new ArrayList<float[]>();
         ponds.add(new float[] {70, 150, 180, 120});
-        ponds.add(new float[] {300, 640, 80, 60});
-        // 16 by 11 grid  skip if near a path or the water
-        for (int gx = 0; gx < 16; gx++) {
-            for (int gy = 0; gy < 11; gy++) {
-                float x = 30 + gx * 110;
-                float y = 20 + gy * 105;
-                if (nearPath(x, y, 70) || nearWater(x, y, 40)) {
-                    continue;
-                }
-                bushes.add(new float[] {x, y, 50, 50});
-            }
-        }
         posts = new ArrayList<float[]>();
-        posts.add(new float[] {400, 296});
-        posts.add(new float[] {508, 296});
-        posts.add(new float[] {720, 492});
-        posts.add(new float[] {828, 492});
-        posts.add(new float[] {1356, 884});
-        posts.add(new float[] {1548, 884});
-        flowers = new ArrayList<float[]>();
-        for (int i = 0; i < bushes.size(); i++) {
-            float[] b = bushes.get(i);
-            flowers.add(new float[] {b[0] + 62, b[1] + 14});
-            flowers.add(new float[] {b[0] + 18, b[1] + 68});
-        }
+        // yellow
+        posts.add(new float[] {1296, 864});
+        posts.add(new float[] {1488, 864});
         enemies = new ArrayList<Goose>();
-        // pinch 1 then pinch 2  not the same gate
-        enemies.add(new Goose(430, 302, tracker));
-        enemies.add(new Goose(760, 498, tracker));
+        // pinch  fork  leftover  last bit
+        enemies.add(new Goose(520, 308, tracker));
+        enemies.add(new Goose(708, 540, tracker));
+        enemies.add(new Goose(188, 600, tracker));
+        enemies.add(new Goose(900, 872, tracker));
         events = new ArrayList<ProximityEvent>();
         // long boi in the grass south of the first stretch
-        events.add(new ProximityEvent("longboi", 320, 190, 48));
-        // leftover food on the west spur
-        events.add(new ProximityEvent("leftover", 90, 718, 50));
+        events.add(new ProximityEvent("longboi", 220, 185, 48));
+        // leftover on the side spur
+        events.add(new ProximityEvent("leftover", 90, 750, 70));
         worldItems = new ArrayList<Item>();
-        worldItems.add(new Item("speed", "drink", 5, 1, 260, 278));
+        worldItems.add(new Item("speed", "drink", 5, 1, 250, 278));
     }
-    public boolean nearPath(float x, float y, float pad) {
-        // used so scatter bushes do not sit on the dirt
+    public void dropLeftover() {
+        // both  spread on the spur not a pile
+        worldItems.add(new Item("greggs", "food", 3, 1, 50, 740));
+        worldItems.add(new Item("greggs", "food", 3, 1, 90, 748));
+        worldItems.add(new Item("greggs", "food", 3, 1, 130, 742));
+        worldItems.add(new Item("greggs", "food", 3, 1, 200, 620));
+        worldItems.add(new Item("speed", "drink", 5, 1, 80, 760));
+        worldItems.add(new Item("speed", "drink", 5, 1, 190, 560));
+        worldItems.add(new Item("speed", "drink", 5, 1, 210, 700));
+    }
+    public boolean onDirt(float px, float py, float pw, float ph) {
+        // dirt plus the lawn beside it  far grass is a wall
+        float pad = 100;
         for (int i = 0; i < paths.size(); i++) {
             float[] p = paths.get(i);
-            if (x + pad > p[0] && x < p[0] + p[2] + pad && y + pad > p[1] && y < p[1] + p[3] + pad) {
+            if (px < p[0] + p[2] + pad && px + pw > p[0] - pad && py < p[1] + p[3] + pad && py + ph > p[1] - pad) {
                 return true;
             }
         }
-        if (x + pad > exit[0] && x < exit[0] + exit[2] + pad && y + pad > exit[1] && y < exit[1] + exit[3] + pad) {
+        if (px < exit[0] + exit[2] + pad && px + pw > exit[0] - pad && py < exit[1] + exit[3] + pad && py + ph > exit[1] - pad) {
             return true;
-        }
-        return false;
-    }
-    public boolean nearWater(float x, float y, float pad) {
-        // same skip for ponds
-        for (int i = 0; i < ponds.size(); i++) {
-            float[] p = ponds.get(i);
-            if (x + pad > p[0] && x < p[0] + p[2] + pad && y + pad > p[1] && y < p[1] + p[3] + pad) {
-                return true;
-            }
         }
         return false;
     }
@@ -123,10 +100,23 @@ public class Map {
         }
         for (int i = 0; i < enemies.size(); i++) {
             Goose g = enemies.get(i);
+            float oldX = g.x;
+            float oldY = g.y;
             if (!g.fed) {
                 g.followPlayer(player.x + player.w / 2, player.y + player.h / 2);
             }
             g.update(dt);
+            if (g.fed) {
+                continue;
+            }
+            // hungry ones stay near the walk  same as me
+            if (hitsBush(g.x, g.y, g.w, g.h) || hitsPond(g.x, g.y, g.w, g.h) || !onDirt(g.x, g.y, g.w, g.h)) {
+                g.x = oldX;
+                g.y = oldY;
+                g.position.x = oldX;
+                g.position.y = oldY;
+                g.syncBox();
+            }
         }
     }
     public boolean hitsBush(float px, float py, float pw, float ph) {
@@ -150,8 +140,11 @@ public class Map {
         return false;
     }
     public boolean checkCollisions() {
-        // bush pond or a hungry goose
+        // far grass is blocked  bush pond or a hungry goose
         float[] box = player.collisionBox.collisionBox;
+        if (!onDirt(box[0], box[1], box[2], box[3])) {
+            return true;
+        }
         if (hitsBush(box[0], box[1], box[2], box[3])) {
             return true;
         }
@@ -223,11 +216,6 @@ public class Map {
         // grass under the camera so the window is never grey
         shapes.setColor(0.45f, 0.7f, 0.38f, 1);
         shapes.rect(camX - viewW / 2 - 80, camY - viewH / 2 - 80, viewW + 160, viewH + 160);
-        shapes.setColor(0.85f, 0.82f, 0.25f, 1);
-        for (int i = 0; i < flowers.size(); i++) {
-            float[] f = flowers.get(i);
-            shapes.circle(f[0], f[1], 5);
-        }
         shapes.setColor(0.62f, 0.5f, 0.32f, 1);
         for (int i = 0; i < paths.size(); i++) {
             float[] p = paths.get(i);
