@@ -1,14 +1,20 @@
+# Goose Patrol
+
+## Running the game
+
 cd goose-patrol
 
-mac
+mac:
 export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 ./gradlew run
 
-linux
+linux:
 ./gradlew run
 
-windows
+windows:
 gradlew.bat run
+
+## Controls
 
 click START
 WASD to walk
