@@ -79,6 +79,8 @@ public class GUI {
         } else if (game.paused) {
             big.draw(batch, "PAUSED", 330, 300);
             font.draw(batch, "SPACE to resume     1/2 then E     R reset     WASD", 150, 262);
+        } else if (game.foundLeft > 0 && game.lastEvent != null) {
+            big.draw(batch, game.lastEvent, 220, 260);
         }
     }
     public void renderWorld(SpriteBatch batch, GameManager game) {

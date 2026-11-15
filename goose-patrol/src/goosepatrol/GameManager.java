@@ -13,6 +13,7 @@ public class GameManager extends ApplicationAdapter {
     int itemsUsed;
     int eventsHit;
     String lastEvent;
+    float foundLeft;
     boolean escaped;
     boolean caught;
     boolean afk;
@@ -47,6 +48,7 @@ public class GameManager extends ApplicationAdapter {
         itemsUsed = 0;
         eventsHit = 0;
         lastEvent = null;
+        foundLeft = 0;
         escaped = false;
         caught = false;
         afk = false;
@@ -137,7 +139,8 @@ public class GameManager extends ApplicationAdapter {
             map.player.pickUp();
             // only say it if a slot actually took it  pocket starts full
             if (got.taken) {
-                lastEvent = "picked up " + got.translation + "  1/2 then E";
+                lastEvent = "you picked up " + got.translation;
+                foundLeft = 2.2f;
             }
         }
         Goose bump = map.overlappingGoose();
@@ -179,9 +182,8 @@ public class GameManager extends ApplicationAdapter {
                     }
                 } else if (e.id.equals("leftover")) {
                     lastEvent = "leftover food on the side path";
-                    // two rolls  pocket is often full so one can wait
-                    map.worldItems.add(new Item("greggs", "food", 3, 1, e.x - 8, e.y));
-                    map.worldItems.add(new Item("greggs", "food", 3, 1, e.x + 22, e.y));
+                    foundLeft = 2.2f;
+                    map.dropLeftover();
                 }
             }
         }
@@ -190,6 +192,12 @@ public class GameManager extends ApplicationAdapter {
             paused = true;
         }
         timeElapsed += dt;
+        if (foundLeft > 0) {
+            foundLeft -= dt;
+            if (foundLeft < 0) {
+                foundLeft = 0;
+            }
+        }
         if (timeElapsed > 300) {
             timeElapsed = 300;
             paused = true;
