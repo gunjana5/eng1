@@ -5,14 +5,20 @@
 cd goose-patrol
 
 mac:
+```
 export JAVA_HOME=$(/usr/libexec/java_home -v 17)\
 ./gradlew run
+```
 
 linux:
+```
 ./gradlew run
+```
 
 windows:
+```
 gradlew.bat run
+```
 
 ## Controls
 
